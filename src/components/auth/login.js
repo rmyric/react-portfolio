@@ -17,7 +17,7 @@ export default class Auth extends Component {
 
     handleChange(event) {
         this.setState({
-            [event.target.name]:event.target.value,
+            [event.target.name]: event.target.value,
             errorText: ""
         });
     }
@@ -46,7 +46,7 @@ export default class Auth extends Component {
             this.setState({
                 errorText: "An error occurred"
             });
-            this.props.handleUnsuccessfulAuth()
+            this.props.handleUnsuccessfulAuth();
         });
 
         

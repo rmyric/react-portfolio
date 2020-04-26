@@ -15,7 +15,9 @@ export default class BlogDetail extends Component {
     getBlogItem() {
         axios.get(`https://ryanmyrick.devcamp.space/portfolio/portfolio_blogs/${this.state.currentId}`
         ).then(response => {
-            console.log("response", response)
+            this.setState({
+                blogItem: response.data.potfolio_blog
+            });
         }).catch(error => {
             console.log("getBlogItem error", error);
         });
@@ -24,6 +26,33 @@ export default class BlogDetail extends Component {
 componentDidMount() {
     this.getBlogItem();
 }
+
+render() {
+    const {
+        title,
+        content,
+        featured_image_url,
+        blog_status
+
+    } = this.state.blogItem;
+
+    return (
+        <div className="blog-container">
+        <div className="content-container">
+            <h1>{title}</h1>
+
+            <div className="featured-image-wrapper">
+            <img src={featured_image_url}/>
+            </div>
+
+            <div className="content">{content}</div>
+        </div>
+        </div>
+
+
+    );
+}
+
 
     render() {
         console.log("currentId", this.state.currentId);

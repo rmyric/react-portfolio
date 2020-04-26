@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios";
 import BlogItem from "../blog/blog-item";
+import BlogModal from "../modals/blog-modal";
+
 
 class Blog extends Component  {
     constructor() {
@@ -13,19 +15,34 @@ class Blog extends Component  {
             blogItems: [],
             totalCount: 0,
             currentPage: 0,
-            isLoading: true
+            isLoading: true, 
+            blogModalIsOpen: false 
         };
 
         this.getBlogItems = this.getBlogItems.bind(this);
-        this.activateInfiniteScroll();
+        this.onScroll = this.onScroll.bind(this);
+        window.addEventListener("scoll", this.onScroll, false);
+        this.handleNewBlogClick = this.handleNewBlogClick.bind(this);
+        this.handleModalClose = this.handleModalClose.bind(this);
     }
 
-    activateInfiniteScroll() {
-        window.onscroll = () => {
+    handleModalClose(){
+        this.setState({
+            blogModalIsOpen: false
+        });
+    }
+
+    handleNewBlogClick() {
+        this.setState({
+            blogModalIsOpen: true 
+        });
+    }
+
+    onScroll() {
             if(
                 this.state.isLoading || 
                 this.state.blogItems.length === this.state.totalCount
-                ) {
+            ) {
                 return;
             }
 
@@ -35,8 +52,8 @@ class Blog extends Component  {
                 ) {
                 this.getBlogItems();
             }
-        };
-    }
+        }
+    
     
     getBlogItems() {
         this.setState({
@@ -63,6 +80,10 @@ componentWillMount() {
     this.getBlogItems();
 }
 
+componentWillUnmount() {
+    window.removeEventListener("scoll", this.onScroll, false);
+}
+
     render() {
         const blogRecords = this.state.blogItems.map(blogItem => {
             return <BlogItem key={blogItem.id} blogItem={blogItem}/>;
@@ -71,8 +92,22 @@ componentWillMount() {
         return (
 
             <div className="blog-container">
-            <div className="content-container">{blogRecords}</div>
+
+                <BlogModal
+                handleModalClose={this.handleModalClose}
+                modalIsOpen={this.state.blogModalIsOpen}
+                />
+
+                <div className="new-blog-link">
+                    <a onClick={this.handleNewBlogClick}>Open Modal</a>
+                </div>
+
+                <div className="content-container">{blogRecords}</div>
+
+
         
+            
+
         {this.state.isLoading ? (
             <div className="content-loader">
             <FontAwesomeIcon icon="spinner" spin />

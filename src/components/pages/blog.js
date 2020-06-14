@@ -55,10 +55,9 @@ class Blog extends Component  {
                 return;
             }
 
-
             if (window.innerHeight + document.documentElement.scrollTop === 
                 document.documentElement.offsetHeight
-                ) {
+            ) {
                 this.getBlogItems();
             }
         }
@@ -73,7 +72,6 @@ class Blog extends Component  {
     })
     .then(response => {
         console.log("getting", response.data );
-
         this.setState({
             blogItems: this.state.blogItems.concat(response.data.portfolio_blogs),
             totalCount: response.data.meta.total_records,
@@ -101,11 +99,10 @@ componentWillUnmount() {
         return (
 
             <div className="blog-container">
-
                 <BlogModal
-                handleSuccessfulNewBlogSubmission={this.handleSuccessfulNewBlogSubmission}
-                handleModalClose={this.handleModalClose}
-                modalIsOpen={this.state.blogModalIsOpen}
+                    handleSuccessfulNewBlogSubmission={this.handleSuccessfulNewBlogSubmission}
+                    handleModalClose={this.handleModalClose}
+                    modalIsOpen={this.state.blogModalIsOpen}
                 />
 
                 {this.props.loggedInStatus === "LOGGED_IN" ? (
@@ -117,10 +114,6 @@ componentWillUnmount() {
                 ) : null}
 
                 <div className="content-container">{blogRecords}</div>
-
-
-        
-            
 
         {this.state.isLoading ? (
             <div className="content-loader">
